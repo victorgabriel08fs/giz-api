@@ -17,6 +17,26 @@ class Registration extends Model
         'discipline_id',
     ];
 
+    public function updateStatus()
+    {
+        $status = 'IN_COURSE';
+        if ($this->discipline->status == "FINISHED") {
+            if ($this->points >= 70) {
+                $status = "APPROVED";
+            } elseif ($this->points >= 50) {
+                $status = "RECUPERATION";
+            } else {
+                $status = "POINTS_REPROVED";
+            }
+
+            if ($this->absences > ($this->discipline->workload * .25)) {
+                $status = "ABSENCES_REPROVED";
+            }
+        }
+
+        $this->update(['status' => $status]);
+    }
+
     public function discipline()
     {
         return $this->belongsTo(Discipline::class)->with('semester');

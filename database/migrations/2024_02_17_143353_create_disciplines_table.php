@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('disciplines', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("status")->default("PENDING");
+            $table->integer("workload");
             $table->integer("period");
             $table->unsignedBigInteger('career_id')->nullable();
             $table->foreign('career_id')
