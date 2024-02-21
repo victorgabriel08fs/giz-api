@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +17,16 @@ class LoginController extends Controller
     {
         try {
             $credentials = $request->only('email', 'password');
-
             if ($token = auth('api')->attempt($credentials)) {
-                return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'bearer',
-                    'expires_in' => auth('api')->factory()->getTTL() * 60, // Tempo de vida do token em segundos
-                    'user' => auth('api')->user()
-                ]);
+                if (in_array($request['role'], auth()->user()->getRoleNames()->toArray())) {
+                    return response()->json([
+                        'access_token' => $token,
+                        'token_type' => 'bearer',
+                        'expires_in' => auth('api')->factory()->getTTL() * 60, // Tempo de vida do token em segundos
+                        'user' => auth('api')->user(),
+                        'role' => $request['role']
+                    ]);
+                }
             }
 
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -46,8 +49,13 @@ class LoginController extends Controller
     public function me(Request $request)
     {
         try {
-            return response()->json(auth()->user());
-
+            if (in_array($request['role'], auth()->user()->getRoleNames()->toArray())) {
+                return response()->json([
+                    'user' => auth()->user(),
+                    'role' => $request['role']
+                ]);
+            }
+            return response()->json(['error' => 'Unauthorized'], 401);
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json(['error' => 'Token expirado'], Response::HTTP_UNAUTHORIZED);
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
@@ -55,6 +63,5 @@ class LoginController extends Controller
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['error' => 'Token ausente'], Response::HTTP_UNAUTHORIZED);
         }
-
     }
 }

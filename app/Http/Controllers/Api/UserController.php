@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::with('bonds','roles')->get();
         return response()->json($users);
     }
 }

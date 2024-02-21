@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\BondController;
+use App\Http\Controllers\Api\CareerController;
+use App\Http\Controllers\Api\RegistrationController;
+use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +25,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/me', [LoginController::class, 'me']);
 
     Route::apiResource('/users', UserController::class);
+    Route::apiResource('/careers', CareerController::class);
+    Route::apiResource('/registrations', RegistrationController::class);
+    Route::apiResource('/semesters', SemesterController::class);
+    Route::apiResource('/bonds', BondController::class);
 });
