@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bonds', function (Blueprint $table) {
             $table->id();
+            $table->string('type')->default('student');
             $table->unsignedBigInteger('career_id')->nullable();
             $table->foreign('career_id')
                 ->references('id')

@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         $user = User::create(['name' => 'Victor Gabriel', 'email' => 'victor@victor.com', 'password' => bcrypt('password')]);
         $user2 = User::create(['name' => 'Andressa Francine', 'email' => 'andressa@andressa.com', 'password' => bcrypt('password')]);
-        $user->assignRole('student');
+        $user->assignRole('student','teacher');
         $user2->assignRole('student');
         $students = User::factory(5)->create();
         foreach ($students as $user) {

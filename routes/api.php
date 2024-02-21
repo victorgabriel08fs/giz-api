@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\BondController;
 use App\Http\Controllers\Api\CareerController;
+use App\Http\Controllers\Api\DisciplineController;
 use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\UserController;
@@ -26,6 +27,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/users', UserController::class);
     Route::apiResource('/careers', CareerController::class);
+    Route::apiResource('/disciplines', DisciplineController::class);
     Route::apiResource('/registrations', RegistrationController::class);
     Route::apiResource('/semesters', SemesterController::class);
     Route::apiResource('/bonds', BondController::class);

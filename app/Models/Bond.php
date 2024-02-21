@@ -11,6 +11,7 @@ class Bond extends Model
 
     protected $fillable = [
         'user_id',
+        'type',
         'career_id'
     ];
 

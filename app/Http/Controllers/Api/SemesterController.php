@@ -13,8 +13,8 @@ class SemesterController extends Controller
 {
     public function index(Request $request)
     {
-        $user = User::find($request['user_id']);
-        $semesters = $user->semesters();
+        $bond = Bond::with('user')->find($request['bond_id']);
+        $semesters = $bond->user->semesters($bond);
         return response()->json($semesters);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Bond;
 use App\Models\Discipline;
 
 class DisciplineObserver
@@ -11,7 +12,10 @@ class DisciplineObserver
      */
     public function created(Discipline $discipline): void
     {
-        //
+        $hasBond = Bond::where([['user_id', $discipline->teacher->id], ['career_id', $discipline->career->id], ['type', 'teacher']])->exists();
+        if (!$hasBond) {
+            Bond::create(['user_id' => $discipline->teacher->id, 'career_id' => $discipline->career->id, 'type' => 'teacher']);
+        }
     }
 
     /**

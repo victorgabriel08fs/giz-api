@@ -28,4 +28,9 @@ class Exercise extends Model
     {
         return $this->belongsTo(Discipline::class);
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(RegistrationExercise::class,'exercise_id');
+    }
 }

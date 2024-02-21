@@ -23,7 +23,13 @@ class ExerciseObserver
      */
     public function updated(Exercise $exercise): void
     {
-        //
+        $previous_value = $exercise->getOriginal('points');
+        if ($previous_value != $exercise->points) {
+            $proportion = $previous_value == 0 || $exercise->points == 0 ? 1 : $exercise->points / $previous_value;
+            foreach ($exercise->registrations as $registration) {
+                $registration->update(['points' => $registration->points * $proportion]);
+            }
+        }
     }
 
     /**

@@ -47,6 +47,11 @@ class Discipline extends Model
         return $this->hasMany(Exercise::class);
     }
 
+    public function exercisesPoints()
+    {
+        return $this->hasMany(Exercise::class)->sum('points');
+    }
+
     public function registrations()
     {
         return $this->hasMany(Registration::class);

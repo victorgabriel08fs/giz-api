@@ -13,6 +13,7 @@ class SemesterSeeder extends Seeder
      */
     public function run(): void
     {
+        Semester::create(["reference" => "20232"]);
         Semester::create(["reference" => "20241"]);
     }
 }

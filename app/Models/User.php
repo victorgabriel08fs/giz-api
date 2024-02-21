@@ -41,22 +41,28 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Registration::class);
     }
 
-    public function semesters()
+    public function semesters($bond)
     {
-        $semesters = [];
-        foreach ($this->registrations as $registration) {
-            !in_array($registration->discipline->semester, $semesters) && array_push($semesters, $registration->discipline->semester);
-        }
-        $sortedSemesters = [];
-        foreach ($semesters as $semester) {
-            $count = 0;
-            foreach ($semesters as $item) {
-                if ($item->created_at > $semester->created_at)
-                    $count++;
+        if ($bond->type == "student") {
+            $semesters = [];
+            foreach ($this->registrations as $registration) {
+                !in_array($registration->discipline->semester, $semesters) && array_push($semesters, $registration->discipline->semester);
             }
-            $sortedSemesters[$count] = $semester;
+            $sortedSemesters = [];
+            foreach ($semesters as $semester) {
+                $count = 0;
+                foreach ($semesters as $item) {
+                    if ($item->created_at > $semester->created_at)
+                        $count++;
+                }
+                $sortedSemesters[$count] = $semester;
+            }
+            ksort($sortedSemesters);
+        } else {
+            $sortedSemesters = Semester::whereHas('disciplines', function ($query) use ($bond) {
+                return $query->where('teacher_id', $bond->user_id)->where('career_id', $bond->career_id);
+            })->get();
         }
-        ksort($sortedSemesters);
         return $sortedSemesters;
     }
 
