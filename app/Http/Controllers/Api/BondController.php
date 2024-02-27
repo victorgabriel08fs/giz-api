@@ -11,7 +11,8 @@ class BondController extends Controller
 {
     public function index(Request $request)
     {
-        $bonds = Bond::with('career', 'user')->where('user_id', $request['user_id'])->where('type', $request['type'])->get();
+        $bonds = Bond::with('career', 'user')->select('bonds.*')->join('careers', 'bonds.career_id', '=', 'careers.id')
+        ->orderBy('created_at','desc')->where('user_id', $request['user_id'])->where('type', $request['type'])->get();
         return response()->json($bonds);
     }
 }

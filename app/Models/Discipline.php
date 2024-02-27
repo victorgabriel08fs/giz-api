@@ -27,6 +27,11 @@ class Discipline extends Model
         Discipline::observe(DisciplineObserver::class);
     }
 
+    public function schedule()
+    {
+        return $this->hasOne(DisciplineSchedule::class, 'discipline_id');
+    }
+
     public function teacher()
     {
         return $this->belongsTo(User::class, 'teacher_id');
@@ -54,6 +59,11 @@ class Discipline extends Model
 
     public function registrations()
     {
-        return $this->hasMany(Registration::class);
+        return $this->hasMany(Registration::class)->with('user','lessons');
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class)->with('registers');
     }
 }

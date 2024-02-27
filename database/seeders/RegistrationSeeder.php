@@ -18,11 +18,20 @@ class RegistrationSeeder extends Seeder
     public function run(): void
     {
         $sistemas_de_informacao = Career::where('name', 'Sistemas de Informação')->get()->first();
-        $disciplinas = Discipline::where('period', 4)->whereRelation('career', 'id', $sistemas_de_informacao->id)->where('semester_id', Semester::orderBy('reference', 'desc')->get()->first()->id)->get();
+        $enfermagem = Career::where('name', 'Enfermagem')->get()->first();
+
+        $disciplinas_sistemas = Discipline::where('period', 4)->where('career_id', $sistemas_de_informacao->id)
+            ->where('semester_id', Semester::orderBy('reference', 'desc')->get()->first()->id)->get();
+        $disciplinas_enfermagem = Discipline::where('period', 5)->where('career_id', $enfermagem->id)
+            ->where('semester_id', Semester::orderBy('reference', 'desc')->get()->first()->id)->get();
+        $cursos = [$disciplinas_sistemas, $disciplinas_enfermagem];
         foreach (User::role('student')->get() as $aluno) {
-            foreach ($disciplinas as $disciplina) {
-                Registration::create(['discipline_id' => $disciplina->id, 'user_id' => $aluno->id]);
-            }
+            if ($aluno->bonds)
+                foreach ($cursos as $curso) {
+                    foreach ($curso as $disciplina) {
+                        Registration::create(['discipline_id' => $disciplina->id, 'user_id' => $aluno->id]);
+                    }
+                }
         }
     }
 }

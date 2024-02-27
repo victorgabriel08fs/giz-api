@@ -17,5 +17,6 @@ class BondSeeder extends Seeder
     public function run(): void
     {
         Bond::create(['career_id'=>Career::where('name','Sistemas de Informação')->get()->first()->id,'user_id'=>1,'type'=>'student']);
+        Bond::create(['career_id'=>Career::where('name','Enfermagem')->get()->first()->id,'user_id'=>1,'type'=>'student']);
     }
 }

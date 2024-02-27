@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             BondSeeder::class,
             RegistrationSeeder::class,
             ExerciseSeeder::class,
-            // RegistrationExerciseSeeder::class
+            RegistrationExerciseSeeder::class,
+            LessonSeeder::class,
+            RegistrationLessonSeeder::class,
         ]);
     }
 }

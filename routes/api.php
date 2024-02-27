@@ -28,6 +28,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/users', UserController::class);
     Route::apiResource('/careers', CareerController::class);
     Route::apiResource('/disciplines', DisciplineController::class);
+    Route::get('/disciplines/lessons/{discipline}', [DisciplineController::class, 'lessons']);
+    Route::post('/disciplines/checkPresence', [DisciplineController::class, 'checkPresence']);
     Route::apiResource('/registrations', RegistrationController::class);
     Route::apiResource('/semesters', SemesterController::class);
     Route::apiResource('/bonds', BondController::class);

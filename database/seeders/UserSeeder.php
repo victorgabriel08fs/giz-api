@@ -17,10 +17,10 @@ class UserSeeder extends Seeder
         $user2 = User::create(['name' => 'Andressa Francine', 'email' => 'andressa@andressa.com', 'password' => bcrypt('password')]);
         $user->assignRole('student','teacher');
         $user2->assignRole('student');
-        $students = User::factory(5)->create();
-        foreach ($students as $user) {
-            $user->assignRole('student');
-        }
+        // $students = User::factory(5)->create();
+        // foreach ($students as $user) {
+        //     $user->assignRole('student');
+        // }
         $teachers = User::factory(5)->create();
         foreach ($teachers as $user) {
             $user->assignRole('teacher');
